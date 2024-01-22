@@ -55,7 +55,7 @@ const syncAuth = async(auth: Auth, session: Session, user: User | null | undefin
   return session
 }
 
-const domain = process.env.NODE_ENV === 'development' ? 'localhost' : '.darkmaterial.space'
+const domain = process.env.VERCEL_ENV === 'development' ? 'localhost' : '.darkmaterial.space'
 
 export const useSession = (auth: Auth): [Session | null, (type: Controls, uid: string) => void, User | null | undefined] => {
   const [uid, setUid] = useCookieState('uid', { defaultValue: '', domain: domain, secure: true, sameSite: 'lax' })

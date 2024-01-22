@@ -46,7 +46,7 @@ const syncAuth = async (auth$1, session, user) => {
   }
   return session;
 };
-const domain = process.env.NODE_ENV === "development" ? "localhost" : ".darkmaterial.space";
+const domain = process.env.VERCEL_ENV === "development" ? "localhost" : ".darkmaterial.space";
 const useSession = (auth2) => {
   const [uid, setUid] = useCookieState("uid", { defaultValue: "", domain, secure: true, sameSite: "lax" });
   const [session, setSession] = useCookieState("SSN", { defaultValue: "", domain, secure: true, sameSite: "lax" });

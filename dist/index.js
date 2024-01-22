@@ -44,7 +44,7 @@
     }
     return session;
   };
-  const domain = process.env.NODE_ENV === "development" ? "localhost" : ".darkmaterial.space";
+  const domain = process.env.VERCEL_ENV === "development" ? "localhost" : ".darkmaterial.space";
   const useSession = (auth2) => {
     const [uid, setUid] = ahooks.useCookieState("uid", { defaultValue: "", domain, secure: true, sameSite: "lax" });
     const [session, setSession] = ahooks.useCookieState("SSN", { defaultValue: "", domain, secure: true, sameSite: "lax" });
