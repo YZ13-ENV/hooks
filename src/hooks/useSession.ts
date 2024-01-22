@@ -111,6 +111,6 @@ export const useSession = (auth: Auth): [Session | null, (type: Controls, uid: s
       setUid('')
       initSession()
     }
-  },[parsedSession])
+  },[parsedSession, auth])
   return [parsedSession, controls, user]
 }

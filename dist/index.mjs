@@ -98,7 +98,7 @@ const useSession = (auth2) => {
       setUid("");
       initSession();
     }
-  }, [parsedSession]);
+  }, [parsedSession, auth2]);
   return [parsedSession, controls, user];
 };
 export {
