@@ -67,7 +67,7 @@ const useSession = (auth2) => {
     } else if (type === "update" && parsedSession) {
       const updatedSession = {
         ...parsedSession,
-        activeUid: parsedSession.activeUid && parsedSession.activeUid === uid2 ? null : parsedSession.activeUid,
+        activeUid: parsedSession.activeUid && parsedSession.activeUid === uid2 ? null : uid2,
         members: !parsedSession.members.includes(uid2) ? [...parsedSession.members, uid2] : parsedSession.members
       };
       const updated = prepareSession(updatedSession);

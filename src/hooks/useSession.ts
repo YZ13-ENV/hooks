@@ -81,7 +81,7 @@ export const useSession = (auth: Auth): [Session | null, (type: Controls, uid: s
     } else if (type === 'update' && parsedSession) {
       const updatedSession: Session = {
         ...parsedSession,
-        activeUid: parsedSession.activeUid && parsedSession.activeUid === uid ? null : parsedSession.activeUid,
+        activeUid: parsedSession.activeUid && parsedSession.activeUid === uid ? null : uid,
         members: !parsedSession.members.includes(uid) ? [...parsedSession.members, uid] : parsedSession.members
       }
       const updated = prepareSession(updatedSession)
