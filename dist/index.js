@@ -48,7 +48,7 @@
   const useSession = (auth2) => {
     const [uid, setUid] = ahooks.useCookieState("uid", { defaultValue: "", domain, secure: true, sameSite: "lax" });
     const [session, setSession] = ahooks.useCookieState("SSN", { defaultValue: "", domain, secure: true, sameSite: "lax" });
-    const [user] = index_esm_js.useAuthState(auth2);
+    const [user, loading] = index_esm_js.useAuthState(auth2);
     const parsedSession = parseSession(session);
     const controls = (type, uid2) => {
       if (!uid2)
@@ -88,15 +88,17 @@
       setSession(session2);
     };
     react.useEffect(() => {
-      if (parsedSession) {
-        syncAuth(auth2, parsedSession, user);
-        if (parsedSession.activeUid)
-          setUid(parsedSession.activeUid);
-      } else {
-        setUid("");
-        initSession();
+      if (!loading) {
+        if (parsedSession) {
+          syncAuth(auth2, parsedSession, user);
+          if (parsedSession.activeUid)
+            setUid(parsedSession.activeUid);
+        } else {
+          setUid("");
+          initSession();
+        }
       }
-    }, [parsedSession, auth2]);
+    }, [parsedSession, auth2, loading]);
     return [parsedSession, controls, user];
   };
   exports2.useSession = useSession;

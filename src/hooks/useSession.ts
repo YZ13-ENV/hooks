@@ -60,7 +60,7 @@ const domain = process.env.VERCEL_ENV === 'development' ? 'localhost' : '.darkma
 export const useSession = (auth: Auth): [Session | null, (type: Controls, uid: string) => void, User | null | undefined] => {
   const [uid, setUid] = useCookieState('uid', { defaultValue: '', domain: domain, secure: true, sameSite: 'lax' })
   const [session, setSession] = useCookieState('SSN', { defaultValue: '', domain: domain, secure: true, sameSite: 'lax' })
-  const [user] = useAuthState(auth)
+  const [user, loading] = useAuthState(auth)
   const parsedSession = parseSession(session as string)
 
   const controls = (type: Controls, uid: string) => {
@@ -104,13 +104,15 @@ export const useSession = (auth: Auth): [Session | null, (type: Controls, uid: s
     setSession(session)
   }
   useEffect(() => {
-    if (parsedSession) {
-      syncAuth(auth, parsedSession, user)
-      if (parsedSession.activeUid) setUid(parsedSession.activeUid)
-    } else {
-      setUid('')
-      initSession()
+    if (!loading) {
+      if (parsedSession) {
+        syncAuth(auth, parsedSession, user)
+        if (parsedSession.activeUid) setUid(parsedSession.activeUid)
+      } else {
+        setUid('')
+        initSession()
+      }
     }
-  },[parsedSession, auth])
+  },[parsedSession, auth, loading])
   return [parsedSession, controls, user]
 }
