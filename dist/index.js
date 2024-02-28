@@ -46,8 +46,18 @@
   };
   const domain = process.env.VERCEL_ENV === "development" ? "localhost" : ".darkmaterial.space";
   const useSession = (auth2) => {
-    const [uid, setUid] = ahooks.useCookieState("uid", { defaultValue: "", domain, secure: true, sameSite: "lax" });
-    const [session, setSession] = ahooks.useCookieState("SSN", { defaultValue: "", domain, secure: true, sameSite: "lax" });
+    const [uid, setUid] = ahooks.useCookieState("uid", {
+      defaultValue: "",
+      domain,
+      secure: true,
+      sameSite: "lax"
+    });
+    const [session, setSession] = ahooks.useCookieState("SSN", {
+      defaultValue: "",
+      domain,
+      secure: true,
+      sameSite: "lax"
+    });
     const [user, loading] = index_esm_js.useAuthState(auth2);
     const parsedSession = parseSession(session);
     const controls = (type, uid2) => {
@@ -98,7 +108,7 @@
           initSession();
         }
       }
-    }, [parsedSession, auth2, loading]);
+    }, [parsedSession, auth2, loading, user]);
     return [parsedSession, controls, user];
   };
   exports2.useSession = useSession;

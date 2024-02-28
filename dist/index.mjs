@@ -48,8 +48,18 @@ const syncAuth = async (auth$1, session, user) => {
 };
 const domain = process.env.VERCEL_ENV === "development" ? "localhost" : ".darkmaterial.space";
 const useSession = (auth2) => {
-  const [uid, setUid] = useCookieState("uid", { defaultValue: "", domain, secure: true, sameSite: "lax" });
-  const [session, setSession] = useCookieState("SSN", { defaultValue: "", domain, secure: true, sameSite: "lax" });
+  const [uid, setUid] = useCookieState("uid", {
+    defaultValue: "",
+    domain,
+    secure: true,
+    sameSite: "lax"
+  });
+  const [session, setSession] = useCookieState("SSN", {
+    defaultValue: "",
+    domain,
+    secure: true,
+    sameSite: "lax"
+  });
   const [user, loading] = useAuthState(auth2);
   const parsedSession = parseSession(session);
   const controls = (type, uid2) => {
@@ -100,7 +110,7 @@ const useSession = (auth2) => {
         initSession();
       }
     }
-  }, [parsedSession, auth2, loading]);
+  }, [parsedSession, auth2, loading, user]);
   return [parsedSession, controls, user];
 };
 export {

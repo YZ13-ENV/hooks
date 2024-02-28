@@ -1,5 +1,5 @@
-import { Auth, User } from 'firebase/auth';
-type Controls = 'add' | 'update' | 'delete';
+import { Auth, User } from "firebase/auth";
+type Controls = "add" | "update" | "delete";
 type Session = {
     activeUid: string | null;
     members: string[];
