@@ -61,11 +61,15 @@ const syncAuth = async (
   return session;
 };
 
-const domain =
-  process.env.VERCEL_ENV === "development"
+const domain = process.env.VERCEL_ENV
+  ? process.env.VERCEL_ENV === "development"
     ? "localhost"
-    : ".darkmaterial.space";
+    : ".darkmaterial.space"
+  : "localhost";
 
+const isDev = process.env.VERCEL_ENV
+  ? process.env.VERCEL_ENV === "development"
+  : false;
 export const useSession = (
   auth: Auth,
 ): [
@@ -76,13 +80,13 @@ export const useSession = (
   const [uid, setUid] = useCookieState("uid", {
     defaultValue: "",
     domain: domain,
-    secure: true,
+    secure: isDev ? false : true,
     sameSite: "lax",
   });
   const [session, setSession] = useCookieState("SSN", {
     defaultValue: "",
     domain: domain,
-    secure: true,
+    secure: isDev ? false : true,
     sameSite: "lax",
   });
   const [user, loading] = useAuthState(auth);
@@ -139,6 +143,7 @@ export const useSession = (
     setSession(session);
   };
   useEffect(() => {
+    if (isDev) console.log(parsedSession, !!user);
     if (!loading) {
       if (parsedSession) {
         syncAuth(auth, parsedSession, user);

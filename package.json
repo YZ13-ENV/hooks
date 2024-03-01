@@ -1,6 +1,6 @@
 {
   "name": "hooks",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "hooks for dm family",
   "private": true,
   "main": "./dist/index.js",
@@ -14,7 +14,7 @@
     }
   },
   "engines": {
-    "node": "21"
+    "node": "20"
   },
   "files": [
     "dist"

@@ -44,18 +44,19 @@
     }
     return session;
   };
-  const domain = process.env.VERCEL_ENV === "development" ? "localhost" : ".darkmaterial.space";
+  const domain = process.env.VERCEL_ENV ? process.env.VERCEL_ENV === "development" ? "localhost" : ".darkmaterial.space" : "localhost";
+  const isDev = process.env.VERCEL_ENV ? process.env.VERCEL_ENV === "development" : false;
   const useSession = (auth2) => {
     const [uid, setUid] = ahooks.useCookieState("uid", {
       defaultValue: "",
       domain,
-      secure: true,
+      secure: isDev ? false : true,
       sameSite: "lax"
     });
     const [session, setSession] = ahooks.useCookieState("SSN", {
       defaultValue: "",
       domain,
-      secure: true,
+      secure: isDev ? false : true,
       sameSite: "lax"
     });
     const [user, loading] = index_esm_js.useAuthState(auth2);
@@ -98,6 +99,8 @@
       setSession(session2);
     };
     react.useEffect(() => {
+      if (isDev)
+        console.log(parsedSession, !!user);
       if (!loading) {
         if (parsedSession) {
           syncAuth(auth2, parsedSession, user);
