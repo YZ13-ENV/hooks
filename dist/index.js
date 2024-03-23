@@ -1,6 +1,6 @@
 (function(global, factory) {
-  typeof exports === "object" && typeof module !== "undefined" ? factory(exports, require("jsonwebtoken"), require("ahooks"), require("react"), require("react-firebase-hooks/auth/dist/index.esm.js"), require("firebase/auth"), require("api")) : typeof define === "function" && define.amd ? define(["exports", "jsonwebtoken", "ahooks", "react", "react-firebase-hooks/auth/dist/index.esm.js", "firebase/auth", "api"], factory) : (global = typeof globalThis !== "undefined" ? globalThis : global || self, factory(global.hooks = {}, global.jsonwebtoken, global.ahooks, global.react, global["react-firebase-hooks/auth"], global["firebase/auth"], global.api));
-})(this, function(exports2, jsonwebtoken, ahooks, react, index_esm_js, auth, api) {
+  typeof exports === "object" && typeof module !== "undefined" ? factory(exports, require("jsonwebtoken"), require("ahooks"), require("react"), require("react-firebase-hooks/auth/dist/index.esm.js"), require("firebase/auth"), require("api"), require("next/navigation.js")) : typeof define === "function" && define.amd ? define(["exports", "jsonwebtoken", "ahooks", "react", "react-firebase-hooks/auth/dist/index.esm.js", "firebase/auth", "api", "next/navigation.js"], factory) : (global = typeof globalThis !== "undefined" ? globalThis : global || self, factory(global.hooks = {}, global.jsonwebtoken, global.ahooks, global.react, global["react-firebase-hooks/auth"], global["firebase/auth"], global.api, global.navigation_js));
+})(this, function(exports2, jsonwebtoken, ahooks, react, index_esm_js, auth, api, navigation_js) {
   "use strict";"use client";
 
   const key = process.env.NEXT_PUBLIC_JWT_SECRET;
@@ -61,6 +61,7 @@
     });
     const [user, loading] = index_esm_js.useAuthState(auth2);
     const parsedSession = parseSession(session);
+    const router = navigation_js.useRouter();
     const controls = (type, uid2) => {
       if (!uid2)
         return void 0;
@@ -104,8 +105,12 @@
       if (!loading) {
         if (parsedSession) {
           syncAuth(auth2, parsedSession, user);
-          if (parsedSession.activeUid)
+          if (user)
+            user.reload();
+          if (parsedSession.activeUid) {
+            router.refresh();
             setUid(parsedSession.activeUid);
+          }
         } else {
           setUid("");
           initSession();

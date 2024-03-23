@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth/dist/index.esm.js";
 import { signInWithCustomToken } from "firebase/auth";
 import { auth } from "api";
+import { useRouter } from "next/navigation.js";
 const key = process.env.NEXT_PUBLIC_JWT_SECRET;
 const parseSession = (session) => {
   if (session && key) {
@@ -63,6 +64,7 @@ const useSession = (auth2) => {
   });
   const [user, loading] = useAuthState(auth2);
   const parsedSession = parseSession(session);
+  const router = useRouter();
   const controls = (type, uid2) => {
     if (!uid2)
       return void 0;
@@ -106,8 +108,12 @@ const useSession = (auth2) => {
     if (!loading) {
       if (parsedSession) {
         syncAuth(auth2, parsedSession, user);
-        if (parsedSession.activeUid)
+        if (user)
+          user.reload();
+        if (parsedSession.activeUid) {
+          router.refresh();
           setUid(parsedSession.activeUid);
+        }
       } else {
         setUid("");
         initSession();

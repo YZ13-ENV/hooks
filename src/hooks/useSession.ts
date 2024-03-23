@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Auth, User, signInWithCustomToken } from "firebase/auth";
 import { auth as authAPI } from "api";
+import { useRouter } from "next/navigation";
 
 type Controls = "add" | "update" | "delete";
 type Session = {
@@ -91,6 +92,7 @@ export const useSession = (
   });
   const [user, loading] = useAuthState(auth);
   const parsedSession = parseSession(session as string);
+  const router = useRouter();
 
   const controls = (type: Controls, uid: string) => {
     if (!uid) return undefined;
@@ -147,7 +149,11 @@ export const useSession = (
     if (!loading) {
       if (parsedSession) {
         syncAuth(auth, parsedSession, user);
-        if (parsedSession.activeUid) setUid(parsedSession.activeUid);
+        if (user) user.reload();
+        if (parsedSession.activeUid) {
+          router.refresh();
+          setUid(parsedSession.activeUid);
+        }
       } else {
         setUid("");
         initSession();
